@@ -9,10 +9,10 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="showcaseview.outlander.showcaseviewdemo.MainActivity"
+    tools:context="showcaseview.naci.showcaseviewdemo.MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <outlander.showcaseview.RippleBackground
+    <naci.showcaseview.RippleBackground
         android:id="@+id/tv_highlighter"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -31,19 +31,17 @@
             android:textSize="18sp"
             android:textStyle="bold" />
 
-    </outlander.showcaseview.RippleBackground>
+    </naci.showcaseview.RippleBackground>
 
     <ImageButton
         android:id="@+id/imgBtn"
+        android:layout_alignParentBottom="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_highlighter"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
         android:background="@null"
         android:src="@drawable/ic_launcher" />
 
-    <outlander.showcaseview.RippleBackground
+    <naci.showcaseview.RippleBackground
         android:id="@+id/btn_highlighter"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -63,6 +61,6 @@
             android:text="Magic Button"
             android:textColor="#ffffff" />
 
-    </outlander.showcaseview.RippleBackground>
+    </naci.showcaseview.RippleBackground>
 
 </RelativeLayout>

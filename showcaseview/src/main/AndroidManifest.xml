@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="outlander.showcaseview">
+    package="naci.showcaseview">
 
     <application
         android:allowBackup="true"
