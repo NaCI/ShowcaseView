@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -84,8 +85,9 @@ public class MainActivity extends AppCompatActivity {
             fabHighlighter.stopRippleAnimation();
 
             showcaseViewBuilder.setTargetView(fab)
-                    .setBackgroundOverlayColor(0xcc000000)
+                    .setBackgroundOverlayColor(ContextCompat.getColor(getBaseContext(), R.color.colorAccentOverlay))
                     .setRingColor(0xcc8e8e8e)
+                    .setShowCircles(false)
                     .setShowcaseShape(ShowcaseViewBuilder.SHAPE_CIRCLE)
                     .setRingWidth(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 2, getResources().getDisplayMetrics()))
                     .addCustomView(R.layout.fab_description_view, Gravity.LEFT, TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 0, getResources().getDisplayMetrics()), TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, -228, getResources().getDisplayMetrics()), TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, -80, getResources().getDisplayMetrics()), 0);
@@ -157,6 +159,8 @@ public class MainActivity extends AppCompatActivity {
         showcaseViewBuilder.setTargetView(imageView)
                 .setBackgroundOverlayColor(0xee4d4d4d)
                 .setRingColor(0xcc8e8e8e)
+                .setDelay(1000)
+                .setDistanceBetweenShowcaseCircles(0)
                 .setRingWidth(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, getResources().getDisplayMetrics()))
                 .addCustomView(view, Gravity.BOTTOM)
                 .setHideOnTouchOutside(true);

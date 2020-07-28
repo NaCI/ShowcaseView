@@ -17,6 +17,8 @@ import java.util.*
 
 class ShowcaseViewBuilder : View, View.OnTouchListener {
 
+    //TODO : notifyOnDisplayed ve notifyOnDissmissed eklenmeli
+
     companion object {
 
         private const val DEFAULT_FADE_DURATION: Long = 700
@@ -25,6 +27,9 @@ class ShowcaseViewBuilder : View, View.OnTouchListener {
 
         const val SHAPE_CIRCLE = 0
         const val SHAPE_SKEW = 1
+
+        private const val DEFAULT_DELAY = 0L
+        private const val DEFAULT_DISTANCE_BETWEEN_CIRCLES = 48
 
         @JvmStatic
         fun init(activity: Activity): ShowcaseViewBuilder {
@@ -63,12 +68,15 @@ class ShowcaseViewBuilder : View, View.OnTouchListener {
     private var ringColor = 0
     private var mRingWidth = 10f
     private var mShowcaseMargin = 12f
-    private var mOuterCircleMargin = 48
+    private var mDistanceBetweenCircles = DEFAULT_DISTANCE_BETWEEN_CIRCLES
     private var mInnerCircleMargin = 24
 
     private var mCenterX = 0f
     private var mCenterY = 0f
     private var mRadius = 0f
+
+    private var mDelayInMillis = DEFAULT_DELAY
+
 
     private var mShape = SHAPE_CIRCLE
 
@@ -82,6 +90,7 @@ class ShowcaseViewBuilder : View, View.OnTouchListener {
     private var mTargetViewGlobalRect: Rect? = null
 
     private var mHideOnTouchOutside: Boolean = false
+    private var mShowCircles: Boolean = true
 
     private constructor(context: Context) : super(context)
 
@@ -119,6 +128,21 @@ class ShowcaseViewBuilder : View, View.OnTouchListener {
 
     fun setShowcaseMargin(showcaseMargin: Float): ShowcaseViewBuilder {
         mShowcaseMargin = showcaseMargin
+        return this
+    }
+
+    fun setDistanceBetweenShowcaseCircles(distanceBetweenCircles: Int): ShowcaseViewBuilder {
+        mDistanceBetweenCircles = distanceBetweenCircles
+        return this
+    }
+
+    fun setDelay(delayInMillis: Long): ShowcaseViewBuilder {
+        mDelayInMillis = delayInMillis
+        return this
+    }
+
+    fun setShowCircles(isShow: Boolean): ShowcaseViewBuilder {
+        mShowCircles = isShow
         return this
     }
 
@@ -226,6 +250,10 @@ class ShowcaseViewBuilder : View, View.OnTouchListener {
         mCustomViewBottomMargins.clear()
         idsClickListenerMap.clear()
         idsRectMap.clear()
+        mShowCircles = true
+        mShape = SHAPE_CIRCLE
+        mDelayInMillis = DEFAULT_DELAY
+        mDistanceBetweenCircles = DEFAULT_DISTANCE_BETWEEN_CIRCLES
         mHideOnTouchOutside = false
 
         mHandler?.post {
@@ -240,12 +268,13 @@ class ShowcaseViewBuilder : View, View.OnTouchListener {
     }
 
     private fun addShowcaseView() {
-        mHandler?.post {
+        mHandler?.postDelayed({
             (mActivity!!.window.decorView as ViewGroup).addView(this)
             AnimationFactory.animateFadeIn(this@ShowcaseViewBuilder, DEFAULT_FADE_DURATION) {
                 visibility = VISIBLE
+                //TODO : notifyondisplayed
             }
-        }
+        }, mDelayInMillis)
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -309,31 +338,33 @@ class ShowcaseViewBuilder : View, View.OnTouchListener {
             tempCanvas!!.drawRect(ring, ringPaint!!);
             tempCanvas!!.drawRect(r, transparentPaint!!);
         } else {
-            tempCanvas!!.drawCircle(
-                mCenterX,
-                mCenterY,
-                (mRadius * 1.2).toInt() + mOuterCircleMargin + (mRingWidth * 2),
-                ringPaint!!
-            )
-            tempCanvas!!.drawCircle(
-                mCenterX,
-                mCenterY,
-                (mRadius * 1.2).toFloat() + mOuterCircleMargin + mRingWidth,
-                circleOverlayPaint!!
-            )
+            if (mShowCircles) {
+                tempCanvas!!.drawCircle(
+                    mCenterX,
+                    mCenterY,
+                    (mRadius * 1.2).toInt() + (mInnerCircleMargin + mDistanceBetweenCircles) + (mRingWidth * 2),
+                    ringPaint!!
+                )
+                tempCanvas!!.drawCircle(
+                    mCenterX,
+                    mCenterY,
+                    (mRadius * 1.2).toFloat() + (mInnerCircleMargin + mDistanceBetweenCircles) + mRingWidth,
+                    circleOverlayPaint!!
+                )
 
-            tempCanvas!!.drawCircle(
-                mCenterX,
-                mCenterY,
-                (mRadius * 1.2).toInt() + mInnerCircleMargin + mRingWidth,
-                ringPaint!!
-            )
-            tempCanvas!!.drawCircle(
-                mCenterX,
-                mCenterY,
-                (mRadius * 1.2).toFloat() + mInnerCircleMargin,
-                circleOverlayPaint!!
-            )
+                tempCanvas!!.drawCircle(
+                    mCenterX,
+                    mCenterY,
+                    (mRadius * 1.2).toInt() + mInnerCircleMargin + mRingWidth,
+                    ringPaint!!
+                )
+                tempCanvas!!.drawCircle(
+                    mCenterX,
+                    mCenterY,
+                    (mRadius * 1.2).toFloat() + mInnerCircleMargin,
+                    circleOverlayPaint!!
+                )
+            }
 
             tempCanvas!!.drawCircle(
                 mCenterX,

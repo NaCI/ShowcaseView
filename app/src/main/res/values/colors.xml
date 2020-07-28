@@ -3,6 +3,7 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="colorAccentOverlay">#AAFF4081</color>
     <color name="overlay_color">#DD111F17</color>
     <color name="ring_color">#FFCA28</color>
     <color name="overlay_color_alternate">#E0273C2F</color>
