@@ -16,6 +16,9 @@ import androidx.core.content.ContextCompat;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import org.jetbrains.annotations.NotNull;
+
+import naci.showcaseview.IShowcaseListener;
 import naci.showcaseview.RippleBackground;
 import naci.showcaseview.ShowcaseViewBuilder;
 
@@ -108,6 +111,22 @@ public class MainActivity extends AppCompatActivity {
                 .setBackgroundOverlayColor(0xcc000000)
                 .setRingColor(0xccb9e797)
                 .setRingWidth(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 3, getResources().getDisplayMetrics()))
+                .setShowcaseListener(new IShowcaseListener() {
+                    @Override
+                    public void onShowcaseDisplayed(@NotNull ShowcaseViewBuilder showcaseView) {
+                        textView.setTextColor(ContextCompat.getColor(getApplicationContext(), android.R.color.holo_red_light));
+                    }
+
+                    @Override
+                    public void onShowcaseDismissed(@NotNull ShowcaseViewBuilder showcaseView) {
+                        textView.setTextColor(ContextCompat.getColor(getApplicationContext(), android.R.color.black));
+                    }
+
+                    @Override
+                    public void onShowcaseSkipped(@NotNull ShowcaseViewBuilder showcaseView) {
+                        textView.setText("You skipped tutorial");
+                    }
+                })
                 .addCustomView(R.layout.layout_showcase_body, Gravity.CENTER);
 
         showcaseViewBuilder.show();
@@ -115,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
         showcaseViewBuilder.setClickListenerOnView(R.id.image_showcase_close, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                showcaseViewBuilder.showcaseSkipped();
                 showcaseViewBuilder.hide();
             }
         });

@@ -17,8 +17,6 @@ import java.util.*
 
 class ShowcaseViewBuilder : View, View.OnTouchListener {
 
-    //TODO : notifyOnDisplayed ve notifyOnDissmissed eklenmeli
-
     companion object {
 
         private const val DEFAULT_FADE_DURATION: Long = 700
@@ -52,6 +50,7 @@ class ShowcaseViewBuilder : View, View.OnTouchListener {
 
     private val idsRectMap: HashMap<Rect, Int> = HashMap()
     private val idsClickListenerMap: HashMap<Int, OnClickListener> = HashMap()
+    private var showcaseListener: IShowcaseListener? = null
 
     private val mCustomView: MutableList<View> = ArrayList()
 
@@ -77,7 +76,6 @@ class ShowcaseViewBuilder : View, View.OnTouchListener {
 
     private var mDelayInMillis = DEFAULT_DELAY
 
-
     private var mShape = SHAPE_CIRCLE
 
     private var tempCanvas: Canvas? = null
@@ -91,6 +89,9 @@ class ShowcaseViewBuilder : View, View.OnTouchListener {
 
     private var mHideOnTouchOutside: Boolean = false
     private var mShowCircles: Boolean = true
+
+    //    private var mShowcaseDismissed = false
+    private var mShowcaseSkipped = false
 
     private constructor(context: Context) : super(context)
 
@@ -144,6 +145,20 @@ class ShowcaseViewBuilder : View, View.OnTouchListener {
     fun setShowCircles(isShow: Boolean): ShowcaseViewBuilder {
         mShowCircles = isShow
         return this
+    }
+
+    fun setShowcaseListener(showcaseListener: IShowcaseListener): ShowcaseViewBuilder {
+        this.showcaseListener = showcaseListener
+        return this
+    }
+
+    fun removeShowcaseListener(): ShowcaseViewBuilder {
+        showcaseListener = null
+        return this
+    }
+
+    fun showcaseSkipped() {
+        mShowcaseSkipped = true
     }
 
     @JvmOverloads
@@ -255,6 +270,9 @@ class ShowcaseViewBuilder : View, View.OnTouchListener {
         mDelayInMillis = DEFAULT_DELAY
         mDistanceBetweenCircles = DEFAULT_DISTANCE_BETWEEN_CIRCLES
         mHideOnTouchOutside = false
+//        mShowcaseDismissed = false
+//        mShowcaseSkipped = false
+//        showcaseListener = null
 
         mHandler?.post {
             AnimationFactory.animateFadeOut(
@@ -272,7 +290,7 @@ class ShowcaseViewBuilder : View, View.OnTouchListener {
             (mActivity!!.window.decorView as ViewGroup).addView(this)
             AnimationFactory.animateFadeIn(this@ShowcaseViewBuilder, DEFAULT_FADE_DURATION) {
                 visibility = VISIBLE
-                //TODO : notifyondisplayed
+                notifyOnDisplayed()
             }
         }, mDelayInMillis)
     }
@@ -543,5 +561,33 @@ class ShowcaseViewBuilder : View, View.OnTouchListener {
             }
         }
         return false
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+
+        //TODO : reset prefs if showcase didn't dismissed
+        /*if (!mShowcaseDismissed && mSingleUse && mPrefsManager != null) {
+            mPrefsManager.resetShowcase();
+        }*/
+
+        notifyOnDetached()
+    }
+
+    private fun notifyOnDetached() {
+        showcaseListener?.let {
+            if (mShowcaseSkipped) {
+                it.onShowcaseSkipped(this)
+            } else {
+                it.onShowcaseDismissed(this)
+            }
+        }
+
+        mShowcaseSkipped = false
+        showcaseListener = null
+    }
+
+    private fun notifyOnDisplayed() {
+        showcaseListener?.onShowcaseDisplayed(this)
     }
 }

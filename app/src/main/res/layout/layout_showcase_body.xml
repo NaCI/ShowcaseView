@@ -18,7 +18,7 @@
         android:layout_marginTop="40dp"
         android:padding="16dp"
         android:tint="@android:color/white"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
 
@@ -31,7 +31,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/image_showcase_close"
         app:layout_constraintVertical_chainStyle="packed"
         android:src="@drawable/images" />
 
