@@ -13,7 +13,10 @@ import android.widget.LinearLayout
 import androidx.annotation.LayoutRes
 import androidx.core.content.ContextCompat
 import naci.showcaseview.animation.AnimationFactory
+import naci.showcaseview.listener.IDetachedListener
+import naci.showcaseview.listener.IShowcaseListener
 import java.util.*
+
 
 class ShowcaseViewBuilder : View, View.OnTouchListener {
 
@@ -51,6 +54,7 @@ class ShowcaseViewBuilder : View, View.OnTouchListener {
     private val idsRectMap: HashMap<Rect, Int> = HashMap()
     private val idsClickListenerMap: HashMap<Int, OnClickListener> = HashMap()
     private var showcaseListener: IShowcaseListener? = null
+    private var detachedListener: IDetachedListener? = null
 
     private val mCustomView: MutableList<View> = ArrayList()
 
@@ -154,6 +158,16 @@ class ShowcaseViewBuilder : View, View.OnTouchListener {
 
     fun removeShowcaseListener(): ShowcaseViewBuilder {
         showcaseListener = null
+        return this
+    }
+
+    fun setDetachedListener(detachedListener: IDetachedListener): ShowcaseViewBuilder {
+        this.detachedListener = detachedListener
+        return this
+    }
+
+    fun removeDetachedListener(): ShowcaseViewBuilder {
+        detachedListener = null
         return this
     }
 
@@ -576,6 +590,14 @@ class ShowcaseViewBuilder : View, View.OnTouchListener {
 
     private fun notifyOnDetached() {
         showcaseListener?.let {
+            if (mShowcaseSkipped) {
+                it.onShowcaseSkipped(this)
+            } else {
+                it.onShowcaseDismissed(this)
+            }
+        }
+
+        detachedListener?.let {
             if (mShowcaseSkipped) {
                 it.onShowcaseSkipped(this)
             } else {

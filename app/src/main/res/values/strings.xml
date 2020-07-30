@@ -3,4 +3,6 @@
     <string name="action_settings">Settings</string>
     <string name="continue_button">Continue</string>
     <string name="description_textview">Bla bla bla</string>
+    <string name="show_sequence">Show Sequence</string>
+    <string name="left_title">Left Title</string>
 </resources>

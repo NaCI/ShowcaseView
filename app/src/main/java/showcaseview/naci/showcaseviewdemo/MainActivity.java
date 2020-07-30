@@ -18,9 +18,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.jetbrains.annotations.NotNull;
 
-import naci.showcaseview.IShowcaseListener;
 import naci.showcaseview.RippleBackground;
 import naci.showcaseview.ShowcaseViewBuilder;
+import naci.showcaseview.listener.IShowcaseListener;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -166,11 +166,6 @@ public class MainActivity extends AppCompatActivity {
                 showcaseViewBuilder.hide();
             }
         });
-//        if (!btnHighlighter.isRippleAnimationRunning()) {
-//            btnHighlighter.startRippleAnimation();
-//        } else {
-//            btnHighlighter.stopRippleAnimation();
-//        }
     }
 
     private void showcaseImage() {
