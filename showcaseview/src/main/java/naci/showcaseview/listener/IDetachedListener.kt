@@ -1,8 +1,8 @@
 package naci.showcaseview.listener
 
-import naci.showcaseview.ShowcaseViewBuilder
+import naci.showcaseview.ShowcaseView
 
 interface IDetachedListener {
-    fun onShowcaseDismissed(showcaseView: ShowcaseViewBuilder)
-    fun onShowcaseSkipped(showcaseView: ShowcaseViewBuilder)
+    fun onShowcaseDismissed(showcaseView: ShowcaseView)
+    fun onShowcaseSkipped(showcaseView: ShowcaseView)
 }

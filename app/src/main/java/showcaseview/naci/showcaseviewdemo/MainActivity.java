@@ -19,12 +19,13 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import org.jetbrains.annotations.NotNull;
 
 import naci.showcaseview.RippleBackground;
-import naci.showcaseview.ShowcaseViewBuilder;
+import naci.showcaseview.ShowcaseView;
 import naci.showcaseview.listener.IShowcaseListener;
 
 public class MainActivity extends AppCompatActivity {
 
-    public ShowcaseViewBuilder showcaseViewBuilder;
+    public ShowcaseView.Builder showcaseViewBuilder;
+    public ShowcaseView showcaseView;
 
     private FloatingActionButton fab;
     private TextView textView;
@@ -75,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         tvHighlighter = (RippleBackground) findViewById(R.id.tv_highlighter);
         btnHighlighter = (RippleBackground) findViewById(R.id.btn_highlighter);
 
-        showcaseViewBuilder = ShowcaseViewBuilder.init(this);
+        showcaseViewBuilder = new ShowcaseView.Builder(this);
 
         showcaseFab();
 
@@ -91,16 +92,16 @@ public class MainActivity extends AppCompatActivity {
                     .setBackgroundOverlayColor(ContextCompat.getColor(getBaseContext(), R.color.colorAccentOverlay))
                     .setRingColor(0xcc8e8e8e)
                     .setShowCircles(false)
-                    .setShowcaseShape(ShowcaseViewBuilder.SHAPE_CIRCLE)
+                    .setShowcaseShape(ShowcaseView.SHAPE_CIRCLE)
                     .setRingWidth(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 2, getResources().getDisplayMetrics()))
                     .addCustomView(R.layout.fab_description_view, Gravity.LEFT, TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 0, getResources().getDisplayMetrics()), TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, -228, getResources().getDisplayMetrics()), TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, -80, getResources().getDisplayMetrics()), 0);
 
-            showcaseViewBuilder.show();
+            showcaseView = showcaseViewBuilder.show();
 
-            showcaseViewBuilder.setClickListenerOnView(R.id.btn, new View.OnClickListener() {
+            showcaseView.setClickListenerOnView(R.id.btn, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    showcaseViewBuilder.hide();
+                    showcaseView.hide();
                 }
             });
         }
@@ -113,36 +114,36 @@ public class MainActivity extends AppCompatActivity {
                 .setRingWidth(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 3, getResources().getDisplayMetrics()))
                 .setShowcaseListener(new IShowcaseListener() {
                     @Override
-                    public void onShowcaseDisplayed(@NotNull ShowcaseViewBuilder showcaseView) {
+                    public void onShowcaseDisplayed(@NotNull ShowcaseView showcaseView) {
                         textView.setTextColor(ContextCompat.getColor(getApplicationContext(), android.R.color.holo_red_light));
                     }
 
                     @Override
-                    public void onShowcaseDismissed(@NotNull ShowcaseViewBuilder showcaseView) {
+                    public void onShowcaseDismissed(@NotNull ShowcaseView showcaseView) {
                         textView.setTextColor(ContextCompat.getColor(getApplicationContext(), android.R.color.black));
                     }
 
                     @Override
-                    public void onShowcaseSkipped(@NotNull ShowcaseViewBuilder showcaseView) {
+                    public void onShowcaseSkipped(@NotNull ShowcaseView showcaseView) {
                         textView.setText("You skipped tutorial");
                     }
                 })
                 .addCustomView(R.layout.layout_showcase_body, Gravity.CENTER);
 
-        showcaseViewBuilder.show();
+        showcaseView = showcaseViewBuilder.show();
 
-        showcaseViewBuilder.setClickListenerOnView(R.id.image_showcase_close, new View.OnClickListener() {
+        showcaseView.setClickListenerOnView(R.id.image_showcase_close, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showcaseViewBuilder.showcaseSkipped();
-                showcaseViewBuilder.hide();
+                showcaseView.showcaseSkipped();
+                showcaseView.hide();
             }
         });
 
-        showcaseViewBuilder.setClickListenerOnView(R.id.material_button_showcase, new View.OnClickListener() {
+        showcaseView.setClickListenerOnView(R.id.material_button_showcase, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showcaseViewBuilder.hide();
+                showcaseView.hide();
             }
         });
     }
@@ -151,19 +152,19 @@ public class MainActivity extends AppCompatActivity {
         showcaseViewBuilder.setTargetView(button)
                 .setBackgroundOverlayColor(0xcc000000)
                 .setRingColor(0xcc8e8e8e)
-                .setShowcaseShape(ShowcaseViewBuilder.SHAPE_SKEW)
+                .setShowcaseShape(ShowcaseView.SHAPE_SKEW)
                 .setRingWidth(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 6, getResources().getDisplayMetrics()))
                 .setShowcaseMargin(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources().getDisplayMetrics()))
                 .addCustomView(R.layout.button_description_view_bottom, Gravity.BOTTOM, TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 2, getResources().getDisplayMetrics()), TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 30, getResources().getDisplayMetrics()), TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 0, getResources().getDisplayMetrics()), 0)
                 .addCustomView(R.layout.skip_layout)
                 .addCustomView(R.layout.button_description_view_top, Gravity.TOP, TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 2, getResources().getDisplayMetrics()), TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, -30, getResources().getDisplayMetrics()), TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 0, getResources().getDisplayMetrics()), 0);
 
-        showcaseViewBuilder.show();
+        showcaseView = showcaseViewBuilder.show();
 
-        showcaseViewBuilder.setClickListenerOnView(R.id.skip_btn, new View.OnClickListener() {
+        showcaseView.setClickListenerOnView(R.id.skip_btn, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showcaseViewBuilder.hide();
+                showcaseView.hide();
             }
         });
     }

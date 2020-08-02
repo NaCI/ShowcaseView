@@ -15,16 +15,15 @@ import androidx.core.content.ContextCompat
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import naci.showcaseview.RippleBackground
 import naci.showcaseview.ShowcaseSequence
-import naci.showcaseview.ShowcaseViewBuilder
-import naci.showcaseview.ShowcaseViewBuilder.Companion.init
+import naci.showcaseview.ShowcaseView
 import naci.showcaseview.listener.IShowcaseListener
 
 class MainActivityKotlin : AppCompatActivity() {
 
-    var showcaseViewBuilder1: ShowcaseViewBuilder? = null
-    var showcaseViewBuilder2: ShowcaseViewBuilder? = null
-    var showcaseViewBuilder3: ShowcaseViewBuilder? = null
-    var showcaseViewBuilder4: ShowcaseViewBuilder? = null
+    var showcaseView1: ShowcaseView? = null
+    var showcaseView2: ShowcaseView? = null
+    var showcaseView3: ShowcaseView? = null
+    var showcaseView4: ShowcaseView? = null
 
     private lateinit var fab: FloatingActionButton
     private lateinit var textView: TextView
@@ -65,7 +64,7 @@ class MainActivityKotlin : AppCompatActivity() {
     }
 
     private fun prepareFirstShowcase() {
-        showcaseViewBuilder1 = init(this)
+        showcaseView1 = ShowcaseView.Builder(this)
             .setTargetView(fab)
             .setBackgroundOverlayColor(
                 ContextCompat.getColor(
@@ -75,7 +74,7 @@ class MainActivityKotlin : AppCompatActivity() {
             )
             .setRingColor(-0x33717172)
             .setShowCircles(false)
-            .setShowcaseShape(ShowcaseViewBuilder.SHAPE_CIRCLE)
+            .setShowcaseShape(ShowcaseView.SHAPE_CIRCLE)
             .setRingWidth(
                 TypedValue.applyDimension(
                     TypedValue.COMPLEX_UNIT_DIP,
@@ -103,14 +102,15 @@ class MainActivityKotlin : AppCompatActivity() {
                 ),
                 0f
             )
+            .build()
 
-        showcaseViewBuilder1!!.setClickListenerOnView(
+        showcaseView1!!.setClickListenerOnView(
             R.id.btn,
-            View.OnClickListener { showcaseViewBuilder1!!.hide() })
+            View.OnClickListener { showcaseView1!!.hide() })
     }
 
     private fun prepareSecondShowcase() {
-        showcaseViewBuilder2 = init(this)
+        showcaseView2 = ShowcaseView.Builder(this)
             .setTargetView(textView)
             .setBackgroundOverlayColor(
                 ContextCompat.getColor(
@@ -128,7 +128,7 @@ class MainActivityKotlin : AppCompatActivity() {
             )
             .setShowcaseListener(object :
                 IShowcaseListener {
-                override fun onShowcaseDisplayed(showcaseView: ShowcaseViewBuilder) {
+                override fun onShowcaseDisplayed(showcaseView: ShowcaseView) {
                     textView.setTextColor(
                         ContextCompat.getColor(
                             applicationContext,
@@ -137,7 +137,7 @@ class MainActivityKotlin : AppCompatActivity() {
                     )
                 }
 
-                override fun onShowcaseDismissed(showcaseView: ShowcaseViewBuilder) {
+                override fun onShowcaseDismissed(showcaseView: ShowcaseView) {
                     textView.setTextColor(
                         ContextCompat.getColor(
                             applicationContext,
@@ -146,28 +146,30 @@ class MainActivityKotlin : AppCompatActivity() {
                     )
                 }
 
-                override fun onShowcaseSkipped(showcaseView: ShowcaseViewBuilder) {
+                override fun onShowcaseSkipped(showcaseView: ShowcaseView) {
                     textView.text = "You skipped tutorial"
                 }
             })
             .addCustomView(R.layout.layout_showcase_body, Gravity.CENTER)
-        showcaseViewBuilder2!!.setClickListenerOnView(
+            .build()
+
+        showcaseView2!!.setClickListenerOnView(
             R.id.image_showcase_close,
             View.OnClickListener {
-                showcaseViewBuilder2!!.showcaseSkipped()
-                showcaseViewBuilder2!!.hide()
+                showcaseView2!!.showcaseSkipped()
+                showcaseView2!!.hide()
             })
-        showcaseViewBuilder2!!.setClickListenerOnView(
+        showcaseView2!!.setClickListenerOnView(
             R.id.material_button_showcase,
-            View.OnClickListener { showcaseViewBuilder2!!.hide() })
+            View.OnClickListener { showcaseView2!!.hide() })
     }
 
     private fun prepareThirdShowcase() {
-        showcaseViewBuilder3 = init(this)
+        showcaseView3 = ShowcaseView.Builder(this)
             .setTargetView(button)
             .setBackgroundOverlayColor(-0x34000000)
             .setRingColor(-0x33717172)
-            .setShowcaseShape(ShowcaseViewBuilder.SHAPE_SKEW)
+            .setShowcaseShape(ShowcaseView.SHAPE_SKEW)
             .setRingWidth(
                 TypedValue.applyDimension(
                     TypedValue.COMPLEX_UNIT_DIP,
@@ -223,9 +225,11 @@ class MainActivityKotlin : AppCompatActivity() {
                 ),
                 0f
             )
-        showcaseViewBuilder3!!.setClickListenerOnView(
+            .build()
+
+        showcaseView3!!.setClickListenerOnView(
             R.id.skip_btn,
-            View.OnClickListener { showcaseViewBuilder3!!.hide() })
+            View.OnClickListener { showcaseView3!!.hide() })
     }
 
     private fun prepareFourthShowcase() {
@@ -237,7 +241,7 @@ class MainActivityKotlin : AppCompatActivity() {
                 R.anim.scale_down
             )
         )
-        showcaseViewBuilder4 = init(this)
+        showcaseView4 = ShowcaseView.Builder(this)
             .setTargetView(imageView)
             .setBackgroundOverlayColor(-0x11b2b2b3)
             .setRingColor(-0x33717172)
@@ -252,6 +256,7 @@ class MainActivityKotlin : AppCompatActivity() {
             )
             .addCustomView(view, Gravity.BOTTOM)
             .setHideOnTouchOutside(true)
+            .build()
     }
 
     private fun showcaseFab() {
@@ -260,32 +265,32 @@ class MainActivityKotlin : AppCompatActivity() {
         } else {
             fabHighlighter.stopRippleAnimation()
             prepareFirstShowcase()
-            showcaseViewBuilder1?.show()
+            showcaseView1?.show()
         }
     }
 
     private fun showcaseTextView() {
         prepareSecondShowcase()
-        showcaseViewBuilder2!!.show()
+        showcaseView2!!.show()
     }
 
     private fun showcaseButton() {
         prepareThirdShowcase()
-        showcaseViewBuilder3!!.show()
+        showcaseView3!!.show()
     }
 
     private fun showcaseImage() {
         prepareFourthShowcase()
-        showcaseViewBuilder4!!.show()
+        showcaseView4!!.show()
     }
 
     private fun showcaseSequence() {
         prepareShowcaseViews()
         val sequence = ShowcaseSequence(this)
-        sequence.addSequenceItem(showcaseViewBuilder1!!)
-        sequence.addSequenceItem(showcaseViewBuilder2!!)
-        sequence.addSequenceItem(showcaseViewBuilder3!!)
-        sequence.addSequenceItem(showcaseViewBuilder4!!)
+        sequence.addSequenceItem(showcaseView1!!)
+        sequence.addSequenceItem(showcaseView2!!)
+        sequence.addSequenceItem(showcaseView3!!)
+        sequence.addSequenceItem(showcaseView4!!)
         sequence.start()
     }
 }

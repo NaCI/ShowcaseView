@@ -170,4 +170,7 @@ Thumbs.db
 ### AndroidStudio Patch ###
 !/gradle/wrapper/gradle-wrapper.jar
 
+app/app.iml
+showcaseview/showcaseview.iml
+
 # End of https://www.gitignore.io/api/android,androidstudio

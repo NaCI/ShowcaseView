@@ -7,13 +7,13 @@ import java.util.*
 class ShowcaseSequence(private val mActivity: Activity, val sequenceID: String? = null) :
     IDetachedListener {
 
-    private val mShowcaseQueue: Queue<ShowcaseViewBuilder>
+    private val mShowcaseQueue: Queue<ShowcaseView>
 
     init {
-        mShowcaseQueue = LinkedList<ShowcaseViewBuilder>()
+        mShowcaseQueue = LinkedList<ShowcaseView>()
     }
 
-    fun addSequenceItem(showcaseView: ShowcaseViewBuilder): ShowcaseSequence {
+    fun addSequenceItem(showcaseView: ShowcaseView): ShowcaseSequence {
         mShowcaseQueue.add(showcaseView)
         return this
     }
@@ -38,13 +38,13 @@ class ShowcaseSequence(private val mActivity: Activity, val sequenceID: String? 
         //TODO : onItemShownListener ShowcaseViewBuilder içine taşınmalı
     }
 
-    override fun onShowcaseDismissed(showcaseView: ShowcaseViewBuilder) {
+    override fun onShowcaseDismissed(showcaseView: ShowcaseView) {
         showcaseView.removeShowcaseListener()
         showNextItem()
         // TODO : Shared Prefs ilerletilmeli
     }
 
-    override fun onShowcaseSkipped(showcaseView: ShowcaseViewBuilder) {
+    override fun onShowcaseSkipped(showcaseView: ShowcaseView) {
         showcaseView.removeShowcaseListener()
         // TODO : Shared Prefs ilerletilmeli
     }

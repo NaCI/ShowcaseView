@@ -18,26 +18,21 @@ import naci.showcaseview.listener.IShowcaseListener
 import java.util.*
 
 
-class ShowcaseViewBuilder : View, View.OnTouchListener {
+class ShowcaseView : View, View.OnTouchListener {
 
     companion object {
-
-        private const val DEFAULT_FADE_DURATION: Long = 700
-
         private const val TAG = "SHOWCASE_VIEW"
 
         const val SHAPE_CIRCLE = 0
         const val SHAPE_SKEW = 1
 
         private const val DEFAULT_DELAY = 0L
+        private const val DEFAULT_FADE_DURATION: Long = 700
         private const val DEFAULT_DISTANCE_BETWEEN_CIRCLES = 48
 
         @JvmStatic
-        fun init(activity: Activity): ShowcaseViewBuilder {
-            val showcaseViewBuilder =
-                ShowcaseViewBuilder(
-                    activity
-                )
+        fun init(activity: Activity): ShowcaseView {
+            val showcaseViewBuilder = ShowcaseView(activity)
             showcaseViewBuilder.mActivity = activity
             showcaseViewBuilder.isClickable = true
             showcaseViewBuilder.mHandler = Handler()
@@ -101,89 +96,75 @@ class ShowcaseViewBuilder : View, View.OnTouchListener {
 
     private constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
 
-    fun setTargetView(view: View?): ShowcaseViewBuilder {
+    // SETTERS
+    fun setTargetView(view: View?) {
         mTargetView = view
-        return this
     }
 
-    fun setBackgroundOverlayColor(color: Int): ShowcaseViewBuilder {
+    fun setBackgroundOverlayColor(color: Int) {
         backgroundOverlayColor = color
-        return this
     }
 
-    fun setRingColor(color: Int): ShowcaseViewBuilder {
+    fun setRingColor(color: Int) {
         ringColor = color
-        return this
     }
 
-    fun setRingWidth(ringWidth: Float): ShowcaseViewBuilder {
+    fun setRingWidth(ringWidth: Float) {
         mRingWidth = ringWidth
-        return this
     }
 
-    fun setShowcaseShape(shape: Int): ShowcaseViewBuilder {
+    fun setShowcaseShape(shape: Int) {
         mShape = shape
-        return this
     }
 
-    fun setHideOnTouchOutside(value: Boolean): ShowcaseViewBuilder {
+    fun setHideOnTouchOutside(value: Boolean) {
         mHideOnTouchOutside = value
-        return this
     }
 
-    fun setShowcaseMargin(showcaseMargin: Float): ShowcaseViewBuilder {
+    fun setShowcaseMargin(showcaseMargin: Float) {
         mShowcaseMargin = showcaseMargin
-        return this
     }
 
-    fun setDistanceBetweenShowcaseCircles(distanceBetweenCircles: Int): ShowcaseViewBuilder {
+    fun setDistanceBetweenShowcaseCircles(distanceBetweenCircles: Int) {
         mDistanceBetweenCircles = distanceBetweenCircles
-        return this
     }
 
-    fun setDelay(delayInMillis: Long): ShowcaseViewBuilder {
+    fun setDelay(delayInMillis: Long) {
         mDelayInMillis = delayInMillis
-        return this
     }
 
-    fun setShowCircles(isShow: Boolean): ShowcaseViewBuilder {
+    fun setShowCircles(isShow: Boolean) {
         mShowCircles = isShow
-        return this
     }
 
-    fun setShowcaseListener(showcaseListener: IShowcaseListener): ShowcaseViewBuilder {
+    fun setShowcaseListener(showcaseListener: IShowcaseListener) {
         this.showcaseListener = showcaseListener
-        return this
     }
 
-    fun removeShowcaseListener(): ShowcaseViewBuilder {
+    fun removeShowcaseListener() {
         showcaseListener = null
-        return this
     }
 
-    fun setDetachedListener(detachedListener: IDetachedListener): ShowcaseViewBuilder {
+    fun setDetachedListener(detachedListener: IDetachedListener) {
         this.detachedListener = detachedListener
-        return this
     }
 
-    fun removeDetachedListener(): ShowcaseViewBuilder {
+    fun removeDetachedListener() {
         detachedListener = null
-        return this
     }
 
     fun showcaseSkipped() {
         mShowcaseSkipped = true
     }
 
-    @JvmOverloads
-    fun addCustomView(
+    private fun addCustomView(
         view: View,
         gravity: Int = Gravity.NO_GRAVITY,
         leftMargin: Float = 0f,
         topMargin: Float = 0f,
         rightMargin: Float = 0f,
         bottomMargin: Float = 0f
-    ): ShowcaseViewBuilder {
+    ): ShowcaseView {
         val metrics = DisplayMetrics()
         mActivity!!.windowManager.defaultDisplay.getMetrics(metrics)
         val rect = Rect()
@@ -200,15 +181,14 @@ class ShowcaseViewBuilder : View, View.OnTouchListener {
         return this
     }
 
-    @JvmOverloads
-    fun addCustomView(
+    private fun addCustomView(
         @LayoutRes layoutId: Int,
         gravity: Int = Gravity.NO_GRAVITY,
         leftMargin: Float = 0f,
         topMargin: Float = 0f,
         rightMargin: Float = 0f,
         bottomMargin: Float = 0f
-    ): ShowcaseViewBuilder {
+    ): ShowcaseView {
         val view = LayoutInflater.from(mActivity).inflate(layoutId, null)
 
         val linearLayout = LinearLayout(mActivity)
@@ -290,7 +270,7 @@ class ShowcaseViewBuilder : View, View.OnTouchListener {
 
         mHandler?.post {
             AnimationFactory.animateFadeOut(
-                this@ShowcaseViewBuilder,
+                this@ShowcaseView,
                 DEFAULT_FADE_DURATION
             ) {
                 visibility = GONE
@@ -302,7 +282,7 @@ class ShowcaseViewBuilder : View, View.OnTouchListener {
     private fun addShowcaseView() {
         mHandler?.postDelayed({
             (mActivity!!.window.decorView as ViewGroup).addView(this)
-            AnimationFactory.animateFadeIn(this@ShowcaseViewBuilder, DEFAULT_FADE_DURATION) {
+            AnimationFactory.animateFadeIn(this@ShowcaseView, DEFAULT_FADE_DURATION) {
                 visibility = VISIBLE
                 notifyOnDisplayed()
             }
@@ -612,4 +592,165 @@ class ShowcaseViewBuilder : View, View.OnTouchListener {
     private fun notifyOnDisplayed() {
         showcaseListener?.onShowcaseDisplayed(this)
     }
+
+    class Builder(private val activity: Activity) {
+        private val showcaseView: ShowcaseView = init(activity)
+
+        /**
+         * Set view to be highlighted
+         *
+         * Note : **This method must be set**
+         */
+        fun setTargetView(view: View?): Builder {
+            showcaseView.setTargetView(view)
+            return this
+        }
+
+        /**
+         * Set background color of showcase view
+         */
+        fun setBackgroundOverlayColor(color: Int): Builder {
+            showcaseView.setBackgroundOverlayColor(color)
+            return this
+        }
+
+        /**
+         * Set color of the rings which helps to highlight target view
+         */
+        fun setRingColor(color: Int): Builder {
+            showcaseView.setRingColor(color)
+            return this
+        }
+
+        /**
+         * Set width of the rings which helps to highlight target view
+         */
+        fun setRingWidth(ringWidth: Float): Builder {
+            showcaseView.setRingWidth(ringWidth)
+            return this
+        }
+
+        /**
+         * Set shape of showcase focus
+         * @param shape SHAPE_SKEW or SHAPE_CIRCLE
+         *
+         * Default value is SHAPE_CIRCLE
+         */
+        fun setShowcaseShape(shape: Int): Builder {
+            showcaseView.setShowcaseShape(shape)
+            return this
+        }
+
+        /**
+         * Set whether hide or not on touch showcase area
+         * @param value true or false
+         *
+         * Default value is false
+         */
+        fun setHideOnTouchOutside(value: Boolean): Builder {
+            showcaseView.setHideOnTouchOutside(value)
+            return this
+        }
+
+        fun setShowcaseMargin(showcaseMargin: Float): Builder {
+            showcaseView.setShowcaseMargin(showcaseMargin)
+            return this
+        }
+
+        /**
+         * Set distance value between 2 highlight circles
+         *
+         * Default value is 48
+         */
+        fun setDistanceBetweenShowcaseCircles(distanceBetweenCircles: Int): Builder {
+            showcaseView.setDistanceBetweenShowcaseCircles(distanceBetweenCircles)
+            return this
+        }
+
+        /**
+         * Set delay before show Showcaseview
+         * @param delayInMillis Delay as milliseconds. Default value is 0
+         */
+        fun setDelay(delayInMillis: Long): Builder {
+            showcaseView.setDelay(delayInMillis)
+            return this
+        }
+
+        /**
+         * Set whether or not show the highlight circles
+         * @param isShow true or false
+         *
+         * Default value is true
+         */
+        fun setShowCircles(isShow: Boolean): Builder {
+            showcaseView.setShowCircles(isShow)
+            return this
+        }
+
+        /**
+         * Set listener to lister showcase states
+         *
+         * Showcase states: onShowcaseDisplayed, onShowcaseDismissed, onShowcaseSkipped
+         */
+        fun setShowcaseListener(showcaseListener: IShowcaseListener): Builder {
+            showcaseView.setShowcaseListener(showcaseListener)
+            return this
+        }
+
+        /**
+         * Add view to be shown on the screen while showcase active
+         */
+        @JvmOverloads
+        fun addCustomView(
+            view: View,
+            gravity: Int = Gravity.NO_GRAVITY,
+            leftMargin: Float = 0f,
+            topMargin: Float = 0f,
+            rightMargin: Float = 0f,
+            bottomMargin: Float = 0f
+        ): Builder {
+            showcaseView.addCustomView(
+                view,
+                gravity,
+                leftMargin,
+                topMargin,
+                rightMargin,
+                bottomMargin
+            )
+            return this
+        }
+
+        /**
+         * Add view to be shown on the screen while showcase active
+         */
+        @JvmOverloads
+        fun addCustomView(
+            @LayoutRes layoutId: Int,
+            gravity: Int = Gravity.NO_GRAVITY,
+            leftMargin: Float = 0f,
+            topMargin: Float = 0f,
+            rightMargin: Float = 0f,
+            bottomMargin: Float = 0f
+        ): Builder {
+            showcaseView.addCustomView(
+                layoutId,
+                gravity,
+                leftMargin,
+                topMargin,
+                rightMargin,
+                bottomMargin
+            )
+            return this
+        }
+
+        fun build(): ShowcaseView {
+            return showcaseView
+        }
+
+        fun show(): ShowcaseView {
+            build().show()
+            return showcaseView
+        }
+    }
+
 }
