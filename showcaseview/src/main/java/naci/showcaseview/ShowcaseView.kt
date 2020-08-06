@@ -560,11 +560,6 @@ class ShowcaseView : View, View.OnTouchListener {
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
 
-        //TODO : reset prefs if showcase didn't dismissed
-        /*if (!mShowcaseDismissed && mSingleUse && mPrefsManager != null) {
-            mPrefsManager.resetShowcase();
-        }*/
-
         notifyOnDetached()
     }
 
