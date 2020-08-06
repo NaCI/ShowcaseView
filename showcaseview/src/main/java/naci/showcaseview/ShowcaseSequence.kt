@@ -4,13 +4,28 @@ import android.app.Activity
 import naci.showcaseview.listener.IDetachedListener
 import java.util.*
 
-class ShowcaseSequence(private val mActivity: Activity, val sequenceID: String? = null) :
+/**
+ * Use to make showcases as sequence
+ *
+ * @param mActivity Activity to be bound
+ * @param sequenceID If u want your sequel to show only once give it a sequenceID,
+ * otherwise leave it to null
+ */
+class ShowcaseSequence(private val mActivity: Activity, private val sequenceID: String? = null) :
     IDetachedListener {
 
     private val mShowcaseQueue: Queue<ShowcaseView>
+    private var mPrefsManager: PrefsManager? = null
 
     init {
         mShowcaseQueue = LinkedList<ShowcaseView>()
+        if (!sequenceID.isNullOrEmpty()) {
+            mPrefsManager = PrefsManager(mActivity, sequenceID)
+        }
+    }
+
+    private fun isShowOnce(): Boolean {
+        return mPrefsManager != null
     }
 
     fun addSequenceItem(showcaseView: ShowcaseView): ShowcaseSequence {
@@ -19,7 +34,9 @@ class ShowcaseSequence(private val mActivity: Activity, val sequenceID: String? 
     }
 
     fun start() {
-        //TODO: single use eklenmeli
+        if (isShowOnce() && mPrefsManager!!.isDisplayed()) {
+            return
+        }
 
         if (mShowcaseQueue.isNotEmpty()) {
             showNextItem()
@@ -32,21 +49,18 @@ class ShowcaseSequence(private val mActivity: Activity, val sequenceID: String? 
             sequenceItem.setDetachedListener(this)
             sequenceItem.show()
         } else {
-            //TODO: single use eklenmeli
+            mPrefsManager?.setDisplayed()
         }
-
-        //TODO : onItemShownListener ShowcaseViewBuilder içine taşınmalı
     }
 
     override fun onShowcaseDismissed(showcaseView: ShowcaseView) {
         showcaseView.removeShowcaseListener()
         showNextItem()
-        // TODO : Shared Prefs ilerletilmeli
     }
 
     override fun onShowcaseSkipped(showcaseView: ShowcaseView) {
         showcaseView.removeShowcaseListener()
-        // TODO : Shared Prefs ilerletilmeli
+        mPrefsManager?.setDisplayed()
     }
 
 }

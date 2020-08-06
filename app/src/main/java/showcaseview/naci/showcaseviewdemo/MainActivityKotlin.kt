@@ -54,6 +54,7 @@ class MainActivityKotlin : AppCompatActivity() {
         tvHighlighter = findViewById(R.id.tv_highlighter)
         btnHighlighter = findViewById(R.id.btn_highlighter)
         showcaseFab()
+        startupSequence()
     }
 
     private fun prepareShowcaseViews() {
@@ -291,6 +292,16 @@ class MainActivityKotlin : AppCompatActivity() {
         sequence.addSequenceItem(showcaseView2!!)
         sequence.addSequenceItem(showcaseView3!!)
         sequence.addSequenceItem(showcaseView4!!)
+        sequence.start()
+    }
+
+    private fun startupSequence() {
+        prepareShowcaseViews()
+        val sequence = ShowcaseSequence(this, "FirstSequence")
+        sequence.addSequenceItem(showcaseView4!!)
+        sequence.addSequenceItem(showcaseView2!!)
+        sequence.addSequenceItem(showcaseView1!!)
+        sequence.addSequenceItem(showcaseView3!!)
         sequence.start()
     }
 }
