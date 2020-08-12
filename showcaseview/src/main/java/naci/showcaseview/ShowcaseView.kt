@@ -250,6 +250,9 @@ class ShowcaseView : View, View.OnTouchListener {
         setOnTouchListener(this)
     }
 
+    /**
+     * Stop showcasing the targetView
+     */
     fun hide() {
         mCustomView.clear()
         mCustomViewGravity.clear()
@@ -480,6 +483,9 @@ class ShowcaseView : View, View.OnTouchListener {
         }
     }
 
+    /**
+     * Sets clicklistener on the components of the customView(s) added
+     */
     fun setClickListenerOnView(id: Int, clickListener: OnClickListener?) {
         idsClickListenerMap[id] = clickListener!!
     }
@@ -647,6 +653,11 @@ class ShowcaseView : View, View.OnTouchListener {
             return this
         }
 
+        /**
+         * Set the margin between target view and showcase layout
+         *
+         * Default value is 12f
+         */
         fun setShowcaseMargin(showcaseMargin: Float): Builder {
             showcaseView.setShowcaseMargin(showcaseMargin)
             return this
@@ -664,7 +675,9 @@ class ShowcaseView : View, View.OnTouchListener {
 
         /**
          * Set delay before show Showcaseview
-         * @param delayInMillis Delay as milliseconds. Default value is 0
+         * @param delayInMillis Delay as milliseconds.
+         *
+         * Default value is 0
          */
         fun setDelay(delayInMillis: Long): Builder {
             showcaseView.setDelay(delayInMillis)
@@ -683,7 +696,7 @@ class ShowcaseView : View, View.OnTouchListener {
         }
 
         /**
-         * Set listener to lister showcase states
+         * Set listener to listen showcase states
          *
          * Showcase states: onShowcaseDisplayed, onShowcaseDismissed, onShowcaseSkipped
          */
@@ -742,6 +755,9 @@ class ShowcaseView : View, View.OnTouchListener {
             return showcaseView
         }
 
+        /**
+         * Start showcasing the targetView
+         */
         fun show(): ShowcaseView {
             build().show()
             return showcaseView

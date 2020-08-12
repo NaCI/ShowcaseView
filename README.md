@@ -1,88 +1,168 @@
-# ShowcaseView
+# ShowcaseView-v2
 
-<p align="center">
-  <img src="https://cloud.githubusercontent.com/assets/4048813/14598878/fc7ed3ac-0571-11e6-94e4-6d98f9ceffe2.png" width="250"/>
-  <img src="https://cloud.githubusercontent.com/assets/4048813/14600231/306fc39a-0579-11e6-9b0d-35c6788bb361.png" width="250"/>
-  <img src="https://cloud.githubusercontent.com/assets/4048813/14598879/fca1afd0-0571-11e6-9d9a-f49fb2dd7ea1.png" width="250"/>
-</p>
+ShowcaseView library updated to v2. 
+
+**Changes in the new version:**
+
+- [x] Migrate to AndroidX
+- [x] Migrated to Kotlin
+- [x] Add Sequence
+- [x] Bug Fixes
+- [x] Add animations
+- [x] Update Sample
+- [x] Code cleared
+- [x] Add Builder pattern to ShowcaseView
+
+
+![Screenshot1](screenshots/showcaseview_ss_1.png?raw=true){:height="50%" width="50%"}
+![Screenshot2](screenshots/showcaseview_ss_2.png?raw=true){:height="50%" width="50%"}
+![Screenshot3](screenshots/showcaseview_ss_3.png?raw=true){:height="50%" width="50%"}
+![Screenshot4](screenshots/showcaseview_ss_4.png?raw=true){:height="50%" width="50%"}
+
+Sequence Demo
+
+![Whole Video](/screenshots/showcaseviewgif.gif?raw=true)
 
 This ShowcaseView library can be used to showcase any specific part of the UI or can even be used during OnBoarding of a user to give a short intro about different widgets visible on the screen. You may add any number of views (ImageView, TextView, FrameLayout, etc displaying images, videos, GIF, text etc) to describe the showcasing view.
 
-<p>Try out sample application on <a href="https://play.google.com/store/apps/details?id=showcaseview.naci.showcaseviewdemo">Android PlayStore</a></p>
+## Gradle
 
-# Usage
+1. Add the jitpack repo to your your project's build.gradle at the end of repositories
 
-<i>For a working implementation of this project see the /app folder </i>
-<ol>
-  <li>
-    <p>Include the library as local library project or add this dependency in your build.gradle.</p>
-    <pre>
-      <code>
-        dependencies {
-          compile 'com.naci.showcaseview:showcaseview:1.4.0'
-        }
-      </code>
-    </pre>
-  </li>
-  <li>
-    <p>Initialise the ShowcaseViewBuilder as follows:</p>
-      <pre>
-      <code>
-        ShowcaseViewBuilder showcaseViewBuilder;
-        ...
-        showcaseViewBuilder = ShowcaseViewBuilder.init(this)
-                .setTargetView(fab)
-                .setBackgroundOverlayColor(0xdd4d4d4d)
-                .setRingColor(0xcc8e8e8e)
-                .setRingWidth((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 20, getResources().getDisplayMetrics()))
-                .setMarkerDrawable(getResources().getDrawable(R.drawable.arrow_up), Gravity.LEFT)
-                .addCustomView(R.layout.description_view, Gravity.TOP)
-                .addCustomView(R.layout.skip_layout)
-                .setCustomViewMargin((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 70, getResources().getDisplayMetrics()));
+**/build.gradle**
+
+```groovy
+allprojects {
+    repositories {
+        jcenter()
+        maven { url "https://jitpack.io" }
+    }
+}
+```
+
+2. Add this dependency to your module's build.gradle.
+
+**/app/build.gradle**
+
+```groovy
+dependencies {
+  implementation 'com.naci.showcaseview:showcaseview:1.4.0'
+}
+```
+
+## Usage
+
+For a working implementation of this project see the /app folder
+
+### Single Usage Example
+
+Initialise the ShowcaseView as follows:
+      
+```kotlin
+val showcaseView = ShowcaseView.Builder(this)
+            .setTargetView(targetView)
+            .setBackgroundOverlayColor(Color.GRAY)
+            .setRingColor(Color.BLUE)
+            .setShowCircles(true)
+            .setHideOnTouchOutside(false)
+            .setShowcaseShape(ShowcaseView.SHAPE_CIRCLE)
+            .setRingWidth(
+                TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    2f,
+                    resources.displayMetrics
+                )
+            )
+            .setDelay(500)
+            .setDistanceBetweenShowcaseCircles(10)
+            .setShowcaseListener(object :
+                IShowcaseListener {
+                override fun onShowcaseDisplayed(showcaseView: ShowcaseView) {
+                    //TODO : do something..
+                }
+
+                override fun onShowcaseDismissed(showcaseView: ShowcaseView) {
+                    //TODO : do something..
+                }
+
+                override fun onShowcaseSkipped(showcaseView: ShowcaseView) {
+                    //TODO : do something..
+                }
+            })
+            .addCustomView(R.layout.layout_showcase_body, Gravity.CENTER)
+            .build()
+
+showcaseView.show()
+```
+  
+Register click listeners on the customView added as follows:
         
-        showcaseViewBuilder.show();
-      </code>
-    </pre>
-  </li>
-  <li>
-    <p>Register click listeners on the customView added as follows:</p>
-        <pre>
-        <code>
-          showcaseViewBuilder.setClickListenerOnView(R.id.exit_btn, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO: Add thing to do when clicked.
-            }
-          });
-        </code>
-      </pre>
-  </li>
-  <li>
-    <p>To hide the showcaseView just call:</p>
-        <pre>
-        <code>
-          showcaseViewBuilder.hide()
-        </code>
-      </pre>
-  </li>
-  <li>
-    <p>To hide the showcaseView when user clicks on the overlay, just set the following flag: <code>showcaseViewBuilder.setHideOnTouchOutside(true);</code> By default, this is always false.</p>
-  </li>
-</ol>
+```kotlin
+showcaseView!!.setClickListenerOnView(
+    R.id.btn,
+    View.OnClickListener {
+        // showcaseView!!.showcaseSkipped() // Use this when skip button clicked 
+        showcaseView!!.hide() 
+    }
+)
+```
+    
+To hide the showcaseView just call:
+        
+```kotlin
+showcaseView.hide()
+```
 
-#Things to keep in mind
-<ul>
-  <li>
-    <p>Call the <code>showcaseViewBuilder.show()</code> only after adding all the customViews and MarkerDrawable.</p>
-  </li>
-  <li>
-      <p><code>setRingWidth(float width) and other margin setters take pixels as parameters. So make sure to send into density independent pixels (dp) value to support multiple screen sizes (See the sample code snippet above for reference)</p>
-    </li>
-  <li>
-    <p>Once <code>showcaseViewBuilder.hide()</code> is called, all the click listeners get <b>deregistered</b>.
-    Thus, you will have to set them back if showing it again. Better to register all the click listeners in a single method which can be called when showing the showcaseView.</p>
-  </li>
-</ul>
+## Properties
+
+| Name        | Description                    | Default Value |
+|-------------|--------------------------------|---------------|
+|setTargetView    | Sets the view which needs to be showcased (**This method must be called inorder to use showcaseview**)          | NA |
+|setBackgroundOverlayColor   | Sets the color of the overlay to be shown   | 0 |
+|setRingColor   | Set color of the focus highlight rings   | 0 |
+|setRingWidth  | Set width of the focus highlight rings   | 10f |
+|setShowcaseShape  | Set shape of showcase focus : SHAPE_SKEW or SHAPE_CIRCLE   | SHAPE_CIRCLE |
+|setHideOnTouchOutside   | Set whether hide or not on touch showcase area   | false |
+|setDistanceBetweenShowcaseCircles   | Set distance value between 2 highlight circles   | 48 |
+|setDelay  | Delay in ms for Showcaseview to be shown  | 0 |
+|setShowCircles   | Set whether or not show the highlight circles fır SHAPE_CIRCLE  | true |
+|setShowcaseListener  | Set listener to listen showcase states : *onShowcaseDisplayed*, *onShowcaseDismissed*, *onShowcaseSkipped* | NA |
+|setClickListenerOnView   | Sets clicklistener on the components of the customView(s) added   | NA |
+|addCustomView  | Sets the custom description view/layout to describe the showcaseView. Also, sets a gravity for the view (TOP, LEFT, RIGHT, BOTTOM) around the showcasing view  | NA |
+|setShowcaseMargin  | Sets the custom description view margin from the showcaseView in the direction of the gravity defined, if any. If no gravity defined, then no point in using this method.  | 12f |  
+
+## Sequence
+
+Prepare ShowcaseView's first then call,
+
+```kotlin
+val sequence = ShowcaseSequence(this)
+sequence.addSequenceItem(showcaseView1!!)
+sequence.addSequenceItem(showcaseView2!!)
+sequence.addSequenceItem(showcaseView3!!)
+sequence.addSequenceItem(showcaseView4!!)
+sequence.start()
+```
+
+Sequence will handle to show all showcases one by one with animation
+
+If you want to show the sequel only **for one time** then create it with sequenceID as showed below,
+
+```kotlin
+val sequence = ShowcaseSequence(this, "sequenceID")
+sequence.addSequenceItem(showcaseView1!!)
+...
+sequence.start()
+```
+
+**Note:** Sequence will be end if u call `showcaseView!!.showcaseSkipped()` method 
+
+## Things to keep in mind
+
+- Call the `showcaseViewBuilder.show()` only after adding all the customViews.
+- `setRingWidth(float width)` and other margin setters take pixels as parameters. So make sure to send into density independent pixels (dp) value to support multiple screen sizes (See the sample code snippet above for reference)
+- Once `showcaseViewBuilder.hide()` is called, all the click listeners get **deregistered**
+- Thus, you will have to set them back if showing it again. Better to register all the click listeners in a single method which can be called when showing the showcaseView.
 
 #Method Definitions
 <ul>
@@ -130,16 +210,18 @@ This ShowcaseView library can be used to showcase any specific part of the UI or
   </li>
 </ul>
 
-#Developed by
-<ul>
-  <li>
-    <a href="https://github.com/outlander24">Aashish Totla</a>
-  </li>
-</ul>
+**Note :** There is an unused Activity in sample app which is written in Java
+
+# Authors
+
+[Aashish Totla](https://github.com/outlander24)
+
+[Naci Özyıldırım](https://github.com/NaCI)
 
 #License
+--------
 
-    Copyright Aashish Totla © 2016. All rights reserved.
+    Copyright 2020 Naci Özyıldırım
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
