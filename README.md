@@ -13,11 +13,9 @@ ShowcaseView library updated to v2.
 - [x] Code cleared
 - [x] Add Builder pattern to ShowcaseView
 
-
-![Screenshot1](screenshots/showcaseview_ss_1.png?raw=true){:height="50%" width="50%"}
-![Screenshot2](screenshots/showcaseview_ss_2.png?raw=true){:height="50%" width="50%"}
-![Screenshot3](screenshots/showcaseview_ss_3.png?raw=true){:height="50%" width="50%"}
-![Screenshot4](screenshots/showcaseview_ss_4.png?raw=true){:height="50%" width="50%"}
+| Showcase Example 1 | Showcase Example 2 | Showcase Example 3 | Showcase Example 4 |
+|----------------|---------------------|-------------------|-------------------|
+| ![Screenshot1](screenshots/showcaseview_ss_1.png?raw=true) | ![Screenshot2](screenshots/showcaseview_ss_2.png?raw=true) | ![Screenshot3](screenshots/showcaseview_ss_3.png?raw=true) |  ![Screenshot4](screenshots/showcaseview_ss_4.png?raw=true)  |
 
 Sequence Demo
 
@@ -164,53 +162,7 @@ sequence.start()
 - Once `showcaseViewBuilder.hide()` is called, all the click listeners get **deregistered**
 - Thus, you will have to set them back if showing it again. Better to register all the click listeners in a single method which can be called when showing the showcaseView.
 
-#Method Definitions
-<ul>
-  <li>
-    <p><code>setTargetView(View v)</code>: Sets the view which needs to be showcased.</p>
-  </li>
-  <li>
-    <p><code>setBackgroundOverlayColor(int color)</code>: Sets the color of the overlay to be shown.</p>
-  </li>
-  <li>
-    <p><code>setRingColor(int color)</code>: Sets the color of the ring around the showcaseView.</p>
-  </li>
-  <li>
-    <p><code>setRingWidth(float width)</code>: Sets the width of the ring around the showcaseView. Default value is 10px</p>
-  </li>
-  <li>
-    <p><code>setMarkerDrawable(Drawable drawable, int gravity)</code>: Sets the marker drawable if any to point the showcaseView. Also, sets a gravity for the drawable (TOP, LEFT, RIGHT, BOTTOM) around the showcasing view.</p>
-  </li>
-  <li>
-    <p><code>setDrawableLeftMargin(float margin)</code>: Sets the marker drawable left margin.</p>
-  </li>
-  <li>
-    <p><code>setDrawableTopMargin(float margin)</code>: Sets the marker drawable top margin.</p>
-  </li>
-  <li>
-    <p><code>addCustomView(View view, int gravity)</code>: Sets the custom description view to describe the showcaseView. Also, sets a gravity for the view (TOP, LEFT, RIGHT, BOTTOM) around the showcasing view.</p>
-  </li>
-  <li>
-    <p><code>addCustomView(View view)</code>: Sets the custom description view to describe the showcaseView. This doesn't takes any gravity as an argument and renders the view as per the gravity defined in the layout file.</p>
-  </li>
-  <li>
-    <p><code>setCustomViewMargin(int margin)</code>: Sets the custom description view margin from the showcaseView in the direction of the gravity defined, if any. If no gravity defined, then no point in using this method.</p>
-  </li>
-  <li>
-    <p><code>setHideOnTouchOutside(boolean hide)</code>: Sets the flag which decide whether to hide the showcase overlay when user touches on the screen anywhere.</p>
-  </li>
-  <li>
-    <p><code>setClickListenerOnView(int id, View.OnClickListener clickListener)</code>: Sets clicklistener on the components of the customView(s) added.</p>
-  </li>
-  <li>
-    <p><code>show()</code>: Start showcasing the targetView.</p>
-  </li>
-  <li>
-    <p><code>hide()</code>: Stop showcasing the targetView.</p>
-  </li>
-</ul>
-
-**Note :** There is an unused Activity in sample app which is written in Java
+**Note :** There is an unused `MainActivity.java` file in sample app which is written in Java
 
 # Authors
 
