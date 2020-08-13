@@ -38,13 +38,13 @@ allprojects {
 }
 ```
 
-2. Add this dependency to your module's build.gradle.
+2. Add this dependency to your module's build.gradle. [![Release](https://jitpack.io/v/naci/showcaseview-v2.svg)](https://jitpack.io/#naci/showcaseview-v2)
 
 **/app/build.gradle**
 
 ```groovy
 dependencies {
-  implementation 'com.naci.showcaseview:showcaseview:1.4.0'
+  implementation 'com.naci.showcaseview:showcaseview:$latest_version'
 }
 ```
 
