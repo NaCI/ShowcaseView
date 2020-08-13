@@ -2,18 +2,9 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
 android {
-    signingConfigs {
-        config {
-            keyAlias 'MyReleaseKey'
-            keyPassword 'IAmSmartEnoughtToHideThis'
-            storeFile file('/Users/ashish/Documents/Personal/ShowcaseViewDemo/MyReleaseKeyStore.jks')
-            storePassword 'IAmSmartEnoughToHideThis'
-        }
-    }
-
     compileSdkVersion 29
     defaultConfig {
-        applicationId "showcaseview.outlander.showcaseviewdemo"
+        applicationId "com.naci.showcaseview.sample"
         minSdkVersion 14
         targetSdkVersion 29
         versionCode 7
@@ -21,11 +12,8 @@ android {
     }
     buildTypes {
         release {
-            shrinkResources true
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            debuggable false
-            signingConfig signingConfigs.config
         }
     }
 }
@@ -39,7 +27,6 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation "androidx.core:core-ktx:1.3.1"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    //compile 'com.naci.showcaseview:showcaseview:1.4.0'
 }
 repositories {
     maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }

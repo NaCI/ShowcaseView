@@ -44,7 +44,7 @@ allprojects {
 
 ```groovy
 dependencies {
-  implementation 'com.naci.showcaseview:showcaseview:$latest_version'
+  implementation 'com.github.naci:showcaseview-v2:$latest_version'
 }
 ```
 
